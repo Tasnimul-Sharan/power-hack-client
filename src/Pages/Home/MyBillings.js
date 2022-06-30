@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import {
   Container,
@@ -9,76 +9,58 @@ import {
   Button,
   Modal,
 } from "react-bootstrap";
+import UseBillingRow from "./UseBillingRow";
+import PaginationPages from "./PaginationPages";
+import { Pagination } from "react-bootstrap";
+import "./Hone.css";
+import AddNewBill from "./AddNewBill";
 
 const MyBillings = () => {
-  const [show, setShow] = useState(false);
+  //   const [validated, setValidated] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  //   const handleSubmit = (event) => {
+  //     const form = event.currentTarget;
+  //     if (form.checkValidity() === false) {
+  //       event.preventDefault();
+  //       event.stopPropagation();
+  //     }
+
+  //     setValidated(true);
+  //   };
+
+  const [pageCount, setPageCount] = useState(0);
+  const [bills, setBills] = useState([]);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+  const [reload, setReload] = useState(true);
+  const [deleteBill, setDeleteBill] = useState(true);
+
+  useEffect(() => {
+    fetch(`http://localhost:5002/billings?page=${page}&size=${size}`)
+      .then((res) => res.json())
+      .then((data) => setBills(data));
+  }, [page, size]);
+
+  useEffect(() => {
+    fetch("http://localhost:5002/billingCount")
+      .then((res) => res.json())
+      .then((data) => {
+        const count = data.count;
+        const pages = Math.ceil(count / 10);
+        setPageCount(pages);
+      });
+  }, []);
+
+  const [billings, setBillings] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:5002/api/billing-list")
+      .then((res) => res.json())
+      .then((data) => setBillings(data));
+  }, [bills]);
+
   return (
     <div className="container">
-      <Navbar bg="light" expand="lg">
-        <Container fluid>
-          <Navbar.Brand href="#">Billings</Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll">
-            <Nav
-              className="me-auto my-2 my-lg-0"
-              style={{ maxHeight: "100px" }}
-              navbarScroll
-            >
-              <Form className="d-flex">
-                <FormControl
-                  type="search"
-                  placeholder="Search"
-                  className="me-2"
-                  aria-label="Search"
-                />
-                {/* <Button variant="outline-success">Search</Button> */}
-              </Form>
-            </Nav>
-            <Button variant="dark" onClick={handleShow}>
-              Add New Bill
-            </Button>
-
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="name@example.com"
-                      autoFocus
-                    />
-                  </Form.Group>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlTextarea1"
-                  >
-                    <Form.Label>Example textarea</Form.Label>
-                    <Form.Control as="textarea" rows={3} />
-                  </Form.Group>
-                </Form>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                  Close
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                  Save Changes
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <AddNewBill />
       <Table border="border" responsive="sm, md lg">
         <thead>
           <tr>
@@ -91,32 +73,33 @@ const MyBillings = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-          </tr>
-          <tr>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-          </tr>
-          <tr>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-          </tr>
+          {billings.map((billing) => (
+            <UseBillingRow
+              key={billing._id}
+              billing={billing}
+              reload={reload}
+              setReload={setReload}
+              setDeleteBill={setDeleteBill}
+            ></UseBillingRow>
+          ))}
         </tbody>
       </Table>
+      <div className="pagination">
+        {[...Array(pageCount).keys()].map((number) => (
+          <Button
+            className={page === number ? "selected" : ""}
+            onClick={() => setPage(number)}
+          >
+            {number}
+          </Button>
+        ))}
+        <select onChange={(e) => setSize(e.target.value)}>
+          <option value="5">5</option>
+          <option value="10" selected>
+            10
+          </option>
+        </select>
+      </div>
     </div>
   );
 };
