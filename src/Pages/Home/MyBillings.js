@@ -43,13 +43,15 @@ const MyBillings = () => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5002/billings?page=${page}&size=${size}`)
+    fetch(
+      `https://peaceful-fortress-93887.herokuapp.com/billings?page=${page}&size=${size}`
+    )
       .then((res) => res.json())
       .then((data) => setBills(data));
   }, [page, size]);
 
   useEffect(() => {
-    fetch("http://localhost:5002/billingCount")
+    fetch("https://peaceful-fortress-93887.herokuapp.com/billingCount")
       .then((res) => res.json())
       .then((data) => {
         const count = data.count;
@@ -67,7 +69,9 @@ const MyBillings = () => {
   } = useQuery(
     ["billing-list"],
     () =>
-      fetch("http://localhost:5002/api/billing-list").then((res) => res.json())
+      fetch(
+        "https://peaceful-fortress-93887.herokuapp.com/api/billing-list"
+      ).then((res) => res.json())
     //   .then((data) => setBillings(data));
     //   }, [bills]);
   );

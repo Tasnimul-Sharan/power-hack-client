@@ -5,12 +5,15 @@ import swal from "sweetalert";
 const UseBillingRow = ({ billing, setReload, reload, refetch, show }) => {
   const { _id, name, email, amount, phone } = billing;
   const handleDelete = (id) => {
-    fetch(`http://localhost:5002/api/delete-billing/${id}`, {
-      method: "DELETE",
-      //   headers: {
-      //     authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      //   },
-    })
+    fetch(
+      `https://peaceful-fortress-93887.herokuapp.com/api/delete-billing/${id}`,
+      {
+        method: "DELETE",
+        //   headers: {
+        //     authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        //   },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -30,13 +33,16 @@ const UseBillingRow = ({ billing, setReload, reload, refetch, show }) => {
     //   amount: data.amount,
     //   phone: data.phone,
     // };
-    fetch(`http://localhost:5002/api/update-billing/${_id}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    fetch(
+      `https://peaceful-fortress-93887.herokuapp.com/api/update-billing/${_id}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

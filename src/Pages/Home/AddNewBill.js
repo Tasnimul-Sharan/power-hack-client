@@ -23,15 +23,20 @@ const AddNewBill = ({ refetch, show, handleClose, handleShow }) => {
 
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
-    axios.post("http://localhost:5002/api/billing-list", data).then((res) => {
-      const { data } = res;
-      console.log(data);
-      if (data) {
-        swal("Good job!", "You have added a new bill", "success");
-        setReload(!reload);
-      }
-      refetch();
-    });
+    axios
+      .post(
+        "https://peaceful-fortress-93887.herokuapp.com/api/billing-list",
+        data
+      )
+      .then((res) => {
+        const { data } = res;
+        console.log(data);
+        if (data) {
+          swal("Good job!", "You have added a new bill", "success");
+          setReload(!reload);
+        }
+        refetch();
+      });
   };
   return (
     <Navbar className="my-2" bg="light" expand="lg">

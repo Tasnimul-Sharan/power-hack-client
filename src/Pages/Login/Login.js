@@ -41,15 +41,17 @@ const Login = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    axios.post("http://localhost:5002/api/login", data).then((res) => {
-      const { data } = res;
-      console.log(data);
-      if (data) {
-        swal("Good job!", "You are login", "success");
-        // setReload(!reload);
-      }
-      //   refetch();
-    });
+    axios
+      .post("https://peaceful-fortress-93887.herokuapp.com/api/login", data)
+      .then((res) => {
+        const { data } = res;
+        console.log(data);
+        if (data) {
+          swal("Good job!", "You are login", "success");
+          // setReload(!reload);
+        }
+        //   refetch();
+      });
     // signInWithEmailAndPassword(data.email, data.password);
   };
 

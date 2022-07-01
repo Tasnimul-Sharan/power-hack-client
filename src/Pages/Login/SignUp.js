@@ -54,11 +54,15 @@ const SignUp = () => {
   const onSubmit = (data) => {
     console.log(data);
     axios
-      .post("http://localhost:5002/api/registration", data, {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      .post(
+        "https://peaceful-fortress-93887.herokuapp.com/api/registration",
+        data,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((res) => {
         const { data } = res;
         console.log(data);
