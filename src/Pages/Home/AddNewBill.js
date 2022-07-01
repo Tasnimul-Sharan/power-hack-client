@@ -12,11 +12,11 @@ import {
 import { useForm } from "react-hook-form";
 import swal from "sweetalert";
 
-const AddNewBill = ({ refetch }) => {
-  const [show, setShow] = useState(false);
+const AddNewBill = ({ refetch, show, handleClose, handleShow }) => {
+  //   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  //   const handleClose = () => setShow(false);
+  //   const handleShow = () => setShow(true);
   const [reload, setReload] = useState(false);
 
   ///api/billing-list
@@ -95,7 +95,7 @@ const AddNewBill = ({ refetch }) => {
                   <Form.Control
                     type="number"
                     placeholder="Phone Number"
-                    {...register("phone")}
+                    {...register("phone", { min: 1, max: 11 })}
                     autoFocus
                   />
                 </Form.Group>

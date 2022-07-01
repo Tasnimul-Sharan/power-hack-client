@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import swal from "sweetalert";
 
-const UseBillingRow = ({ billing, setReload, reload, refetch }) => {
+const UseBillingRow = ({ billing, setReload, reload, refetch, show }) => {
   const { _id, name, email, amount, phone } = billing;
   const handleDelete = (id) => {
     fetch(`http://localhost:5002/api/delete-billing/${id}`, {
@@ -23,13 +23,19 @@ const UseBillingRow = ({ billing, setReload, reload, refetch }) => {
       });
   };
 
-  const handleUpdate = (id) => {
-    fetch(`http://localhost:5002/api/update-billing/${id}`, {
+  const handleUpdate = (data) => {
+    // const update = {
+    //   name: data.name,
+    //   email: data.email,
+    //   amount: data.amount,
+    //   phone: data.phone,
+    // };
+    fetch(`http://localhost:5002/api/update-billing/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
       },
-      //   body: JSON.stringify(data),
+      body: JSON.stringify(data),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -45,10 +51,14 @@ const UseBillingRow = ({ billing, setReload, reload, refetch }) => {
       <td>{_id}</td>
       <td>{name}</td>
       <td>{email}</td>
-      <td>{amount}</td>
       <td>{phone}</td>
+      <td>{amount}</td>
       <td>
-        <Button onClick={() => handleUpdate(_id)} variant="dark">
+        <Button
+          // show={show}
+          onClick={(show) => handleUpdate(show)}
+          variant="dark"
+        >
           Edit
         </Button>{" "}
         |{" "}

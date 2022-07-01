@@ -36,6 +36,11 @@ const MyBillings = () => {
   const [size, setSize] = useState(10);
   const [reload, setReload] = useState(true);
   const [deleteBill, setDeleteBill] = useState(true);
+  const [data, setData] = useState([]);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     fetch(`http://localhost:5002/billings?page=${page}&size=${size}`)
@@ -72,7 +77,13 @@ const MyBillings = () => {
   }
   return (
     <div className="container">
-      <AddNewBill refetch={refetch} />
+      <AddNewBill
+        refetch={refetch}
+        show={show}
+        // setShow={setShow}
+        handleClose={handleClose}
+        handleShow={handleShow}
+      />
       <Table border="border" responsive="sm, md lg">
         <thead>
           <tr>
@@ -85,7 +96,7 @@ const MyBillings = () => {
           </tr>
         </thead>
         <tbody>
-          {billings.map((billing) => (
+          {billings?.map((billing) => (
             <UseBillingRow
               key={billing._id}
               billing={billing}
@@ -93,6 +104,8 @@ const MyBillings = () => {
               setReload={setReload}
               //   setDeleteBill={setDeleteBill}
               refetch={refetch}
+              show={show}
+              //   data={data}
             ></UseBillingRow>
           ))}
         </tbody>
