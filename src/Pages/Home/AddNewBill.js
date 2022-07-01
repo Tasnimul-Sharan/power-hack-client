@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useState } from "react";
-import Spinner from "react-bootstrap/Spinner";
 import {
   Container,
   Nav,
@@ -13,7 +12,7 @@ import {
 import { useForm } from "react-hook-form";
 import swal from "sweetalert";
 
-const AddNewBill = () => {
+const AddNewBill = ({ refetch }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -31,7 +30,7 @@ const AddNewBill = () => {
         swal("Good job!", "You have added a new bill", "success");
         setReload(!reload);
       }
-      <Spinner animation="border" variant="primary" />;
+      refetch();
     });
   };
   return (

@@ -14,6 +14,8 @@ import PaginationPages from "./PaginationPages";
 import { Pagination } from "react-bootstrap";
 import "./Hone.css";
 import AddNewBill from "./AddNewBill";
+import { useQuery } from "react-query";
+import Loading from "../Shared/Loading";
 
 const MyBillings = () => {
   //   const [validated, setValidated] = useState(false);
@@ -51,16 +53,26 @@ const MyBillings = () => {
       });
   }, []);
 
-  const [billings, setBillings] = useState([]);
-  useEffect(() => {
-    fetch("http://localhost:5002/api/billing-list")
-      .then((res) => res.json())
-      .then((data) => setBillings(data));
-  }, [bills]);
+  //   const [billings, setBillings] = useState([]);
+  //   useEffect(() => {
+  const {
+    data: billings,
+    isLoading,
+    refetch,
+  } = useQuery(
+    ["billing-list"],
+    () =>
+      fetch("http://localhost:5002/api/billing-list").then((res) => res.json())
+    //   .then((data) => setBillings(data));
+    //   }, [bills]);
+  );
 
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="container">
-      <AddNewBill />
+      <AddNewBill refetch={refetch} />
       <Table border="border" responsive="sm, md lg">
         <thead>
           <tr>
@@ -79,7 +91,8 @@ const MyBillings = () => {
               billing={billing}
               reload={reload}
               setReload={setReload}
-              setDeleteBill={setDeleteBill}
+              //   setDeleteBill={setDeleteBill}
+              refetch={refetch}
             ></UseBillingRow>
           ))}
         </tbody>

@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import swal from "sweetalert";
 
-const UseBillingRow = ({ billing, setReload, reload, setDeleteBill }) => {
+const UseBillingRow = ({ billing, setReload, reload, refetch }) => {
   const { _id, name, email, amount, phone } = billing;
   const handleDelete = (id) => {
     fetch(`http://localhost:5002/api/delete-billing/${id}`, {
@@ -15,10 +15,11 @@ const UseBillingRow = ({ billing, setReload, reload, setDeleteBill }) => {
       .then((data) => {
         console.log(data);
         if (data.deletedCount) {
-          swal("Deleted!", "You have Deleted a billings", "success");
-          setDeleteBill(false);
+          swal("Deleted!", "You have Deleted a billing item", "success");
+          //   setDeleteBill(false);
           setReload(reload);
         }
+        refetch();
       });
   };
 
