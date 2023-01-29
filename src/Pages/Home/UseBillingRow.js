@@ -5,15 +5,12 @@ import swal from "sweetalert";
 const UseBillingRow = ({ billing, setReload, reload, refetch, show }) => {
   const { _id, name, email, amount, phone } = billing;
   const handleDelete = (id) => {
-    fetch(
-      `https://peaceful-fortress-93887.herokuapp.com/api/delete-billing/${id}`,
-      {
-        method: "DELETE",
-        //   headers: {
-        //     authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        //   },
-      }
-    )
+    fetch(`http://localhost:5002/api/delete-billing/${id}`, {
+      method: "DELETE",
+      //   headers: {
+      //     authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      //   },
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -26,23 +23,20 @@ const UseBillingRow = ({ billing, setReload, reload, refetch, show }) => {
       });
   };
 
-  const handleUpdate = (data) => {
+  const handleUpdate = (id) => {
     // const update = {
     //   name: data.name,
-    //   email: data.email,
-    //   amount: data.amount,
-    //   phone: data.phone,
+    //   email: update.email,
+    //   amount: update.amount,
+    //   phone: update.phone,
     // };
-    fetch(
-      `https://peaceful-fortress-93887.herokuapp.com/api/update-billing/${_id}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    )
+    fetch(`http://localhost:5002/api/update-billing/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(),
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

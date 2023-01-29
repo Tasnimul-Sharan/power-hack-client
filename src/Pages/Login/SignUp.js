@@ -1,68 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import auth from "../../firebase.init";
+// import auth from "../../firebase.init";
 import {
   useCreateUserWithEmailAndPassword,
-  useSignInWithGoogle,
   useUpdateProfile,
 } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Loading from "../Shared/Loading";
+// import Loading from "../Shared/Loading";
 // import google from "../../images/google.png";
 // import useToken from "../../Hooks/useToken";
 import axios from "axios";
 import swal from "sweetalert";
 import { Form, Card } from "react-bootstrap";
-// import Card from "react-bootstrap/Card";
+import auth from "../../firebase.init";
 
 const SignUp = () => {
-  //   const [createUserWithEmailAndPassword, user, loading, error] =
-  //     useCreateUserWithEmailAndPassword(auth);
-  //   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-  //   const [updateProfile, updating, updateError] = useUpdateProfile(auth);
-  //   const [token] = useToken(user || gUser);
-  //   const navigate = useNavigate();
-  //   const [error, setError] = useState("");
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+  // const [token] = useToken(user);
+  const navigate = useNavigate();
+  // const [error, setError] = useState("");
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
-  //   const location = useLocation();
-  //   let from = location.state?.from?.pathname || "/";
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
 
-  //   useEffect(() => {
-  //     if (token) {
-  //       navigate(from, { replace: true });
-  //     }
-  //   }, [token, from, navigate]);
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, from, navigate]);
 
-  //   let signInError;
-  //   if (error) {
-  //     signInError = (
-  //       <p className="text-red-800">
-  //         <small>{error?.message}</small>
-  //       </p>
-  //     );
-  //   }
-
-  //   if (loading || updating) {
-  //     return <Loading />;
-  //   }
-
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+    await createUserWithEmailAndPassword(data.email, data.password);
+    await updateProfile({ displayName: data.name });
     axios
-      .post(
-        "https://peaceful-fortress-93887.herokuapp.com/api/registration",
-        data,
-        {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+      .post("http://localhost:5002/api/registration", data, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then((res) => {
         const { data } = res;
         console.log(data);
@@ -72,19 +55,17 @@ const SignUp = () => {
         }
         //   refetch();
       });
-    // await createUserWithEmailAndPassword(data.email, data.password);
-    // await updateProfile({ displayName: data.name });
   };
   return (
     <div className="d-flex justify-content-center align-items-cente my-5">
       <Card className="  shadow-lg " style={{ width: "25rem" }}>
         <h1 className="text-3xl font-bold text-center">SIGN UP</h1>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-control w-full max-w-xs m-7">
-            <input
+          <Form.Group className=" m-3">
+            <Form.Control
               type="text"
               placeholder="Enter Name"
-              class="input input-bordered w-full max-w-xs"
+              // class="input input-bordered w-full max-w-xs"
               {...register("name", {
                 required: {
                   value: true,
@@ -95,9 +76,9 @@ const SignUp = () => {
             {errors.email?.type === "required" && (
               <span className="text-red-500">{errors.email.message}</span>
             )}
-          </div>
-          <div className="form-control w-full max-w-xs m-7">
-            <input
+          </Form.Group>
+          <Form.Group className="m-3">
+            <Form.Control
               type="email"
               placeholder="Enter Email"
               class="input input-bordered w-full max-w-xs"
@@ -118,9 +99,9 @@ const SignUp = () => {
             {errors.email?.type === "pattern" && (
               <span className="text-red-500">{errors.email.message}</span>
             )}
-          </div>
-          <div className="form-control w-full max-w-xs m-7">
-            <input
+          </Form.Group>
+          <Form.Group className="m-3">
+            <Form.Control
               type="password"
               placeholder="Enter Password"
               class="input input-bordered w-full max-w-xs"
@@ -141,9 +122,9 @@ const SignUp = () => {
             {errors.password?.type === "minlength" && (
               <span className="text-red-500">{errors.password.message}</span>
             )}
-          </div>
+          </Form.Group>
           <input
-            className="btn btn-primary w-full max-w-xs"
+            className="btn btn-dark w-full max-w-xs"
             type="submit"
             value="Sign Up"
           />
@@ -155,11 +136,6 @@ const SignUp = () => {
             </button>
           </Link>{" "}
         </p>
-        {/* <div class="divider">OR</div>
-        <button className="btn btn-info m-5" onClick={() => signInWithGoogle()}>
-          <img src={google} alt="" />
-          <span className="m-5 text-white">Sign In With Google</span>
-        </button> */}
       </Card>
     </div>
   );

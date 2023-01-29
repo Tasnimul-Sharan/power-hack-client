@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import {
   Container,
   Nav,
@@ -12,32 +12,34 @@ import {
 import { useForm } from "react-hook-form";
 import swal from "sweetalert";
 
-const AddNewBill = ({ refetch, show, handleClose, handleShow }) => {
+const AddNewBill = ({
+  refetch,
+  show,
+  handleClose,
+  handleShow,
+  reload,
+  setReload,
+}) => {
   //   const [show, setShow] = useState(false);
-
   //   const handleClose = () => setShow(false);
   //   const handleShow = () => setShow(true);
-  const [reload, setReload] = useState(false);
-
+  // const [reload, setReload] = useState(false);
   ///api/billing-list
 
   const { register, handleSubmit } = useForm();
+
   const onSubmit = (data) => {
-    axios
-      .post(
-        "https://peaceful-fortress-93887.herokuapp.com/api/billing-list",
-        data
-      )
-      .then((res) => {
-        const { data } = res;
+    axios.post("http://localhost:5002/api/billing-list", data).then((res) => {
+      const { data } = res;
+      if (data) {
         console.log(data);
-        if (data) {
-          swal("Good job!", "You have added a new bill", "success");
-          setReload(!reload);
-        }
-        refetch();
-      });
+        swal("Good job!", "You have added a new bill", "success");
+      }
+      setReload(!reload);
+      refetch();
+    });
   };
+
   return (
     <Navbar className="my-2" bg="light" expand="lg">
       <Container fluid>
@@ -100,7 +102,7 @@ const AddNewBill = ({ refetch, show, handleClose, handleShow }) => {
                   <Form.Control
                     type="number"
                     placeholder="Phone Number"
-                    {...register("phone", { min: 1, max: 11 })}
+                    {...register("phone")}
                     autoFocus
                   />
                 </Form.Group>
@@ -124,14 +126,6 @@ const AddNewBill = ({ refetch, show, handleClose, handleShow }) => {
                 </Button>
               </Form>
             </Modal.Body>
-            {/* <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={handleClose}>
-                Save Changes
-              </Button>
-            </Modal.Footer> */}
           </Modal>
         </Navbar.Collapse>
       </Container>

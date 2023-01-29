@@ -12,29 +12,17 @@ import {
 import UseBillingRow from "./UseBillingRow";
 import PaginationPages from "./PaginationPages";
 import { Pagination } from "react-bootstrap";
-import "./Hone.css";
+import "./Home.css";
 import AddNewBill from "./AddNewBill";
 import { useQuery } from "react-query";
 import Loading from "../Shared/Loading";
 
 const MyBillings = () => {
-  //   const [validated, setValidated] = useState(false);
-
-  //   const handleSubmit = (event) => {
-  //     const form = event.currentTarget;
-  //     if (form.checkValidity() === false) {
-  //       event.preventDefault();
-  //       event.stopPropagation();
-  //     }
-
-  //     setValidated(true);
-  //   };
-
   const [pageCount, setPageCount] = useState(0);
   const [bills, setBills] = useState([]);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
-  const [reload, setReload] = useState(true);
+  const [reload, setReload] = useState(false);
   const [deleteBill, setDeleteBill] = useState(true);
   const [data, setData] = useState([]);
 
@@ -42,38 +30,28 @@ const MyBillings = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  useEffect(() => {
-    fetch(
-      `https://peaceful-fortress-93887.herokuapp.com/billings?page=${page}&size=${size}`
-    )
-      .then((res) => res.json())
-      .then((data) => setBills(data));
-  }, [page, size]);
+  // useEffect(() => {
+  //   fetch(`http://localhost:5002/billings?page=${page}&size=${size}`)
+  //     .then((res) => res.json())
+  //     .then((data) => setBills(data));
+  // }, [page, size]);
 
-  useEffect(() => {
-    fetch("https://peaceful-fortress-93887.herokuapp.com/billingCount")
-      .then((res) => res.json())
-      .then((data) => {
-        const count = data.count;
-        const pages = Math.ceil(count / 10);
-        setPageCount(pages);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:5002/billingCount")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       const count = data.count;
+  //       const pages = Math.ceil(count / 10);
+  //       setPageCount(pages);
+  //     });
+  // }, []);
 
-  //   const [billings, setBillings] = useState([]);
-  //   useEffect(() => {
   const {
     data: billings,
     isLoading,
     refetch,
-  } = useQuery(
-    ["billing-list"],
-    () =>
-      fetch(
-        "https://peaceful-fortress-93887.herokuapp.com/api/billing-list"
-      ).then((res) => res.json())
-    //   .then((data) => setBillings(data));
-    //   }, [bills]);
+  } = useQuery(["billing-list"], () =>
+    fetch("http://localhost:5002/api/billing-list").then((res) => res.json())
   );
 
   if (isLoading) {
@@ -85,6 +63,8 @@ const MyBillings = () => {
         refetch={refetch}
         show={show}
         // setShow={setShow}
+        reload={reload}
+        setReload={setReload}
         handleClose={handleClose}
         handleShow={handleShow}
       />

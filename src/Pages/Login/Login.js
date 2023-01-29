@@ -1,58 +1,48 @@
 import React, { useEffect } from "react";
 import Loading from "../Shared/Loading";
 import { useForm } from "react-hook-form";
-// import auth from "../../firebase.init";
-// import {
-//   useSignInWithEmailAndPassword,
-//   useSignInWithGoogle,
-// } from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// import Loading from "../Shared/Loading";
-// import google from "../../images/google.png";
-// import useToken from "../../Hooks/useToken";
 import { Form, Card } from "react-bootstrap";
 import axios from "axios";
 import swal from "sweetalert";
 
 const Login = () => {
-  //   const [signInWithEmailAndPassword, user, loading, error] =
-  //     useSignInWithEmailAndPassword(auth);
-  //   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-  //   const navigate = useNavigate();
-  //   const [token] = useToken(user || gUser);
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
-  //   const location = useLocation();
-  //   let from = location.state?.from?.pathname || "/";
+  const location = useLocation();
+  let from = location.state?.from?.pathName || "/";
 
-  //   useEffect(() => {
-  //     if (token) {
-  //       navigate(from, { replace: true });
-  //     }
-  //   }, [token, from, navigate]);
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, from, navigate]);
 
-  //   if (loading) {
-  //     return <Loading />;
-  //   }
+  if (loading) {
+    return <Loading />;
+  }
 
   const onSubmit = (data) => {
     console.log(data);
-    axios
-      .post("https://peaceful-fortress-93887.herokuapp.com/api/login", data)
-      .then((res) => {
-        const { data } = res;
-        console.log(data);
-        if (data) {
-          swal("Good job!", "You are login", "success");
-          // setReload(!reload);
-        }
-        //   refetch();
-      });
-    // signInWithEmailAndPassword(data.email, data.password);
+    signInWithEmailAndPassword(data.email, data.password);
+    axios.post("http://localhost:5002/api/login", data).then((res) => {
+      const { data } = res;
+      console.log(data);
+      if (data) {
+        swal("Good job!", "You are login", "success");
+        // setReload(!reload);
+      }
+      //   refetch();
+    });
   };
 
   return (
@@ -120,11 +110,6 @@ const Login = () => {
             </button>
           </Link>{" "}
         </p>
-        {/* <div class="divider">OR</div>
-        <button className="btn btn-info m-5" onClick={() => signInWithGoogle()}>
-          <img src={google} alt="" />
-          <span className="m-5 text-white">Sign In With Google</span>
-        </button> */}
       </Card>
     </div>
   );
