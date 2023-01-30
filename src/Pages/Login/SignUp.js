@@ -74,14 +74,14 @@ const SignUp = () => {
               })}
             />
             {errors.email?.type === "required" && (
-              <span className="text-red-500">{errors.email.message}</span>
+              <span className="text-danger">{errors.text?.message}</span>
             )}
           </Form.Group>
           <Form.Group className="m-3">
             <Form.Control
               type="email"
               placeholder="Enter Email"
-              class="input input-bordered w-full max-w-xs"
+              // class="input in"
               {...register("email", {
                 required: {
                   value: true,
@@ -94,17 +94,17 @@ const SignUp = () => {
               })}
             />
             {errors.email?.type === "required" && (
-              <span className="text-red-500">{errors.email.message}</span>
+              <span className="text-danger">{errors.email.message}</span>
             )}
             {errors.email?.type === "pattern" && (
-              <span className="text-red-500">{errors.email.message}</span>
+              <span className="text-danger">{errors.email.message}</span>
             )}
           </Form.Group>
           <Form.Group className="m-3">
             <Form.Control
               type="password"
               placeholder="Enter Password"
-              class="input input-bordered w-full max-w-xs"
+              class="text-danger"
               {...register("password", {
                 required: {
                   value: true,
@@ -117,10 +117,10 @@ const SignUp = () => {
               })}
             />
             {errors.password?.type === "required" && (
-              <span className="text-red-500">{errors.password.message}</span>
+              <span className="text-danger">{errors.password.message}</span>
             )}
             {errors.password?.type === "minlength" && (
-              <span className="text-red-500">{errors.password.message}</span>
+              <span className="text-danger">{errors.password.message}</span>
             )}
           </Form.Group>
           <input

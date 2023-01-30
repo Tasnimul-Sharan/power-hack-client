@@ -16,6 +16,7 @@ import "./Home.css";
 import AddNewBill from "./AddNewBill";
 import { useQuery } from "react-query";
 import Loading from "../Shared/Loading";
+import UpdateBilling from "./UpdateBilling";
 
 const MyBillings = () => {
   const [pageCount, setPageCount] = useState(0);
@@ -29,6 +30,12 @@ const MyBillings = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // const [updateShow, setUpdateShow] = useState(false);
+  // const handleUpdateClose = () => setUpdateShow(false);
+  // const handlUpdateeShow = () => setUpdateShow(true);
+
+  const [updateBilling, setUpdateBilling] = useState(false);
 
   // useEffect(() => {
   //   fetch(`http://localhost:5002/billings?page=${page}&size=${size}`)
@@ -68,7 +75,7 @@ const MyBillings = () => {
         handleClose={handleClose}
         handleShow={handleShow}
       />
-      <Table border="border" responsive="sm, md lg">
+      <Table border="border" responsive="sm">
         <thead>
           <tr>
             <th>Billing Id</th>
@@ -84,16 +91,27 @@ const MyBillings = () => {
             <UseBillingRow
               key={billing._id}
               billing={billing}
-              reload={reload}
               setReload={setReload}
-              //   setDeleteBill={setDeleteBill}
+              reload={reload}
               refetch={refetch}
-              show={show}
-              //   data={data}
+              updateShow={show}
+              setUpdateBilling={setUpdateBilling}
+              handlShow={handleShow}
             ></UseBillingRow>
           ))}
         </tbody>
       </Table>
+      {updateBilling && (
+        <UpdateBilling
+          setUpdateBilling={setUpdateBilling}
+          id={updateBilling._id}
+          billing={updateBilling}
+          refetch={refetch}
+          handleShow={handleShow}
+          show={show}
+          handleClose={handleClose}
+        />
+      )}
       <div className="pagination">
         {[...Array(pageCount).keys()].map((number) => (
           <Button

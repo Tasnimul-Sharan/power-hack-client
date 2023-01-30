@@ -50,11 +50,11 @@ const Login = () => {
       <Card className="  shadow-lg " style={{ width: "25rem" }}>
         <h1 className="text-3xl font-bold text-center">LOG IN</h1>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-control w-full max-w-xs m-7">
-            <input
+          <Form.Group className=" m-3">
+            <Form.Control
               type="email"
               placeholder="Enter Email"
-              class="input input-bordered w-full max-w-xs"
+              // class="m-3"
               {...register("email", {
                 required: {
                   value: true,
@@ -72,9 +72,9 @@ const Login = () => {
             {errors.email?.type === "pattern" && (
               <span className="text-red-500">{errors.email.message}</span>
             )}
-          </div>
-          <div className="form-control w-full max-w-xs m-7">
-            <input
+          </Form.Group>
+          <Form.Group className=" m-3">
+            <Form.Control
               type="password"
               placeholder="Enter Password"
               class="input input-bordered w-full max-w-xs"
@@ -95,10 +95,10 @@ const Login = () => {
             {errors.password?.type === "minlength" && (
               <span className="text-red-500">{errors.password.message}</span>
             )}
-          </div>
+          </Form.Group>
 
           <input
-            className="btn btn-primary w-full max-w-xs"
+            className="btn btn-dark w-full max-w-xs"
             type="submit"
             value="LOG IN"
           />

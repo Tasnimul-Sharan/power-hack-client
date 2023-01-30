@@ -12,20 +12,7 @@ import {
 import { useForm } from "react-hook-form";
 import swal from "sweetalert";
 
-const AddNewBill = ({
-  refetch,
-  show,
-  handleClose,
-  handleShow,
-  reload,
-  setReload,
-}) => {
-  //   const [show, setShow] = useState(false);
-  //   const handleClose = () => setShow(false);
-  //   const handleShow = () => setShow(true);
-  // const [reload, setReload] = useState(false);
-  ///api/billing-list
-
+const AddNewBill = ({ refetch, show, handleClose, handleShow }) => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
@@ -35,7 +22,7 @@ const AddNewBill = ({
         console.log(data);
         swal("Good job!", "You have added a new bill", "success");
       }
-      setReload(!reload);
+      // setReload(!reload);
       refetch();
     });
   };
@@ -63,10 +50,9 @@ const AddNewBill = ({
           <Button variant="dark" onClick={handleShow}>
             Add New Bill
           </Button>
-
           <Modal show={show} onHide={handleClose}>
             <Modal.Header>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Add New Bill</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form onSubmit={handleSubmit(onSubmit)}>
