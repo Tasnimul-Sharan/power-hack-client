@@ -34,15 +34,17 @@ const Login = () => {
   const onSubmit = (data) => {
     console.log(data);
     signInWithEmailAndPassword(data.email, data.password);
-    axios.post("http://localhost:5002/api/login", data).then((res) => {
-      const { data } = res;
-      console.log(data);
-      if (data) {
-        swal("Good job!", "You are login", "success");
-        // setReload(!reload);
-      }
-      //   refetch();
-    });
+    axios
+      .post("https://power-hack-server-sigma.vercel.app/api/login", data)
+      .then((res) => {
+        const { data } = res;
+        console.log(data);
+        if (data) {
+          swal("Good job!", "You are login", "success");
+          // setReload(!reload);
+        }
+        //   refetch();
+      });
   };
 
   return (

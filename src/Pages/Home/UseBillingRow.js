@@ -13,12 +13,15 @@ const UseBillingRow = ({
 }) => {
   const { _id, name, email, amount, phone } = billing;
   const handleDelete = (id) => {
-    fetch(`http://localhost:5002/api/delete-billing/${id}`, {
-      method: "DELETE",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
+    fetch(
+      `https://power-hack-server-sigma.vercel.app/api/delete-billing/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

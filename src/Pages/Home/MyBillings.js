@@ -38,13 +38,13 @@ const MyBillings = () => {
   const [updateBilling, setUpdateBilling] = useState(false);
 
   // useEffect(() => {
-  //   fetch(`http://localhost:5002/billings?page=${page}&size=${size}`)
+  //   fetch(`https://power-hack-server-sigma.vercel.app/billings?page=${page}&size=${size}`)
   //     .then((res) => res.json())
   //     .then((data) => setBills(data));
   // }, [page, size]);
 
   // useEffect(() => {
-  //   fetch("http://localhost:5002/billingCount")
+  //   fetch("https://power-hack-server-sigma.vercel.app/billingCount")
   //     .then((res) => res.json())
   //     .then((data) => {
   //       const count = data.count;
@@ -58,7 +58,9 @@ const MyBillings = () => {
     isLoading,
     refetch,
   } = useQuery(["billing-list"], () =>
-    fetch("http://localhost:5002/api/billing-list").then((res) => res.json())
+    fetch("https://power-hack-server-sigma.vercel.app/api/billing-list").then(
+      (res) => res.json()
+    )
   );
 
   if (isLoading) {

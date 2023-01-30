@@ -41,11 +41,15 @@ const SignUp = () => {
     await createUserWithEmailAndPassword(data.email, data.password);
     await updateProfile({ displayName: data.name });
     axios
-      .post("http://localhost:5002/api/registration", data, {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      .post(
+        "https://power-hack-server-sigma.vercel.app/api/registration",
+        data,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((res) => {
         const { data } = res;
         console.log(data);

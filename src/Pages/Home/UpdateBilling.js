@@ -18,7 +18,7 @@ const UpdateBilling = ({
 
   const onSubmit = (data) => {
     console.log(data);
-    const url = `http://localhost:5002/api/update-billing/${_id}`;
+    const url = `https://power-hack-server-sigma.vercel.app/api/update-billing/${_id}`;
     axios
       .patch(url, JSON.stringify(data), {
         headers: {

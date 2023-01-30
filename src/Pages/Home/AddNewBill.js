@@ -16,15 +16,17 @@ const AddNewBill = ({ refetch, show, handleClose, handleShow }) => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:5002/api/billing-list", data).then((res) => {
-      const { data } = res;
-      if (data) {
-        console.log(data);
-        swal("Good job!", "You have added a new bill", "success");
-      }
-      // setReload(!reload);
-      refetch();
-    });
+    axios
+      .post("https://power-hack-server-sigma.vercel.app/api/billing-list", data)
+      .then((res) => {
+        const { data } = res;
+        if (data) {
+          console.log(data);
+          swal("Good job!", "You have added a new bill", "success");
+        }
+        // setReload(!reload);
+        refetch();
+      });
   };
 
   return (
